@@ -1,0 +1,22 @@
+{
+  "name": "vanguard-balance-fetcher",
+  "version": "0.0.0",
+  "description": "A simple JS library for fetching the balance in a Vanguard account",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rhobot/vanguard-balance-fetcher.git"
+  },
+  "keywords": [
+    "vanguard"
+  ],
+  "author": "Ryan Rho",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/rhobot/vanguard-balance-fetcher/issues"
+  },
+  "homepage": "https://github.com/rhobot/vanguard-balance-fetcher#readme"
+}
