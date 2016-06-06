@@ -4,6 +4,7 @@
   "description": "A simple JS library for fetching the balance in a Vanguard account",
   "main": "index.js",
   "scripts": {
+    "eslint": "eslint *.js lib/**/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/rhobot/vanguard-balance-fetcher/issues"
   },
-  "homepage": "https://github.com/rhobot/vanguard-balance-fetcher#readme"
+  "homepage": "https://github.com/rhobot/vanguard-balance-fetcher#readme",
+  "devDependencies": {
+    "eslint": "^2.11.1"
+  }
 }
