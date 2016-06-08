@@ -3,6 +3,11 @@ export default function fetchVanguardBalance(userName, password, accountId, cb) 
     return;
   }
 
+  if (!userName || !password || !accountId) {
+    cb({message: 'userName, password, and accountId are required'});
+    return;
+  }
+
   // TODO Authenticate
 
   // TODO Fetch HTML in the balance page.
