@@ -8,7 +8,8 @@
     "url": "git+https://github.com/rhobot/vanguard-balance-fetcher.git"
   },
   "keywords": [
-    "vanguard"
+    "vanguard",
+    "rebalance"
   ],
   "author": "Ryan Rho",
   "license": "WTFPL",
@@ -17,18 +18,19 @@
   },
   "homepage": "https://github.com/rhobot/vanguard-balance-fetcher#readme",
   "scripts": {
-    "eslint": "eslint *.js lib/**/*.js",
+    "lint": "eslint *.js lib/**/*.js",
     "test": "babel-tape-runner test/**/*.js"
   },
+  "dependencies": {
+    "babel": "^6.5.2",
+    "babel-plugin-transform-async-to-generator": "^6.8.0",
+    "babel-preset-es2015": "^6.9.0",
+    "request": "^2.72.0"
+  },
   "devDependencies": {
+    "babel-eslint": "^6.0.4",
     "babel-tape-runner": "^2.0.1",
     "eslint": "^2.11.1",
     "tape": "^4.5.1"
-  },
-  "dependencies": {
-    "async": "^2.0.0-rc.6",
-    "babel": "^6.5.2",
-    "babel-preset-es2015": "^6.9.0",
-    "request": "^2.72.0"
   }
 }
