@@ -3,7 +3,7 @@ import {LOGIN_PAGE_URL, LOGIN_FORM_URL, DASHBOARD_URL} from './config/links';
 
 const request = Request.defaults({jar: true});
 
-function getLoginPage(done) {
+function getLoginPage() {
   return new Promise((resolve, reject) => {
     request(LOGIN_PAGE_URL, (err, res, body) => {
       if (err) {
@@ -16,7 +16,7 @@ function getLoginPage(done) {
   });
 }
 
-function authenticate(userName, password, done) {
+function authenticate(userName, password) {
   return new Promise((resolve, reject) => {
     request.post(LOGIN_FORM_URL, {
       form: {
@@ -39,7 +39,7 @@ function authenticate(userName, password, done) {
   });
 }
 
-function getDashboardPage(done) {
+function getDashboardPage() {
   return new Promise((resolve, reject) => {
     request(DASHBOARD_URL, function fetchDashboardPage(err, res, body) {
       if (err) {
