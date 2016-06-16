@@ -63,15 +63,19 @@ export default async function fetchVanguardBalance(userName, password, accountId
     return;
   }
 
+  let html;
+
   try {
     await getLoginPage();
     await authenticate(userName, password);
-    const html = await getDashboardPage();
-
-    // TODO Fetch HTML in the balance page.
-
-    cb(null, html);
+    html = await getDashboardPage();
   } catch (err) {
     cb(err);
+    return;
   }
+
+  // TODO Parse the HTML into balance.
+  const result = html;
+
+  cb(null, result);
 }
