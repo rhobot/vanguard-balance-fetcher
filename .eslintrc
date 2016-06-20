@@ -39,7 +39,8 @@
     "__filename": false,
     "require": false,
     "module": false,
-    "Promise": false
+    "Promise": false,
+    "document": false
   },
   "rules": {
     "no-alert": 2,
