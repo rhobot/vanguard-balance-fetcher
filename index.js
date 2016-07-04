@@ -1,8 +1,10 @@
 import {create as createPhantom} from 'phantom';
 import {setTimeout} from 'timers';
-import {LOGIN_PAGE_URL} from './config/links';
+import {openLoginHomePage, authenticate} from './lib/login';
 
-export default async function fetchVanguardBalance(userName, password, cb) {
+const DEFAULT_TIMEOUT = 5000;
+
+export default async function fetchVanguardBalance(userName, password, securityQuestionAnswerMap, cb) {
   if (!cb) {
     return;
   }
@@ -16,27 +18,27 @@ export default async function fetchVanguardBalance(userName, password, cb) {
   let phantom;
 
   try {
-    // Go to login page.
     phantom = await createPhantom();
-    const loginHomePage = await phantom.createPage();
-    await loginHomePage.open(LOGIN_PAGE_URL);
+    const loginHomePage = await openLoginHomePage(phantom);
+    await authenticate(loginHomePage, userName, password);
 
-    // Authenticate.
-    await loginHomePage.evaluate((userNameInput, passwordInput) => {
-      document.getElementById('USER').value = userNameInput;
-      document.getElementById('PASSWORD').value = passwordInput;
-      document.getElementById('login').click();
-    }, userName, password);
+    setTimeout(async () => {
+      // Handle Security question page.
+      const isSecurityQuestionPage = await loginHomePage.evaluate(() => {
+        const h1 = document.getElementsByTagName('h1')[0];
+        const title = h1 && h1.innerHTML && h1.innerHTML.toLowerCase();
+        return title === 'answer your security question';
+      });
 
-    // TODO Remove setTimeout hack
-    setTimeout(() => {
-      loginHomePage.render('page.png');
-      loginHomePage.close();
+      console.log('isSecurityQuestionPage = ', isSecurityQuestionPage);
+
+      // loginHomePage.render('page.png');
+      // loginHomePage.close();
+
       cb(null, {result: 'not implemented yet'});
-      phantom.exit();
-    }, 5000);
 
-    // TODO Handle Security question page.
+      phantom.exit();
+    }, DEFAULT_TIMEOUT);
 
     // TODO Get the balance.
   } catch (err) {
