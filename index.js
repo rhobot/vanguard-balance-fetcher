@@ -1,22 +1,8 @@
 import {create as createPhantom} from 'phantom';
-import {setTimeout} from 'timers';
+
 import {openLoginHomePage, authenticate} from './lib/login';
-import {checkIsSecurityQuestionPage, getSecurityAnswer, answerSecurityQuestion} from './lib/security-question';
-
-const DEFAULT_TIMEOUT = 4000;
-
-function nextStep(cb, page, phantom) {
-  console.log('next step');
-  page.render('page.png');
-
-  // TODO Handle notice message (such as holiday closing)
-  // continueInput
-
-  page.close();
-  phantom.exit();
-
-  cb(null, {result: 'not implemented yet'});
-}
+import answerSecurityQuestion from './lib/security-question';
+import continueNoticePage from './lib/notice-page';
 
 export default async function fetchVanguardBalance(userName, password, securityQuestionAnswers, cb) {
   if (!cb || !userName || !password) {
@@ -30,34 +16,18 @@ export default async function fetchVanguardBalance(userName, password, securityQ
     phantom = await createPhantom();
     const page = await openLoginHomePage(phantom);
     await authenticate(page, userName, password);
+    await answerSecurityQuestion(securityQuestionAnswers, page);
+    await continueNoticePage(page);
 
-    setTimeout(async () => {
-      const isSecurityQuestionPage = await checkIsSecurityQuestionPage(page);
+    // TODO Show balance
 
-      if (isSecurityQuestionPage) {
-        if (!securityQuestionAnswers) {
-          cb({message: 'Security Questions param required'});
-          return;
-        }
+    page.render('page.png');
+    page.close();
+    phantom.exit();
 
-        const securityAnswer = await getSecurityAnswer(page, securityQuestionAnswers);
-
-        if (!securityAnswer) {
-          cb({message: 'Could not find the answer of the security question.'});
-          return;
-        }
-
-        await answerSecurityQuestion(page, securityAnswer);
-
-        setTimeout(() => nextStep(cb, page, phantom), DEFAULT_TIMEOUT);
-      } else {
-        nextStep(cb, page, phantom);
-      }
-    }, DEFAULT_TIMEOUT);
-
-    // TODO Get the balance.
+    cb(null, {result: 'not implemented yet'});
   } catch (err) {
-    cb(err);
+    cb(err.message);
     phantom.exit();
   }
 }
