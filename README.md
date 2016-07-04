@@ -8,19 +8,6 @@ A simple JS library for fetching the balance in a [Vanguard](https://investor.va
 ```js
 import fetchBalance from 'vanguard-balance-fetcher';
 
-fetchBalance('username', 'password', securityQuestionAnswers, (err, balance) => {
-  if (err) {
-    // TODO Handle error
-    return;
-  }
-
-  console.log(balance);
-});
-```
-
-## Format of `securityQuestionAnswers` param
-
-```js
 const securityQuestionAnswers = [
   {
     question: 'What is the first name of your boy or girlfriend?',
@@ -32,9 +19,19 @@ const securityQuestionAnswers = [
   },
   ...
 ];
+
+
+fetchBalance('username', 'password', securityQuestionAnswers, (err, balance) => {
+  if (err) {
+    // TODO Handle error
+    return;
+  }
+
+  console.log(balance);
+});
 ```
 
-## Example of `balance` object:
+## And the `balance` looks like this:
 ```js
 {
   AccountID1: {
