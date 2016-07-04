@@ -1,17 +1,26 @@
 import {create as createPhantom} from 'phantom';
 import {setTimeout} from 'timers';
 import {openLoginHomePage, authenticate} from './lib/login';
+import {checkIsSecurityQuestionPage, getSecurityAnswer, answerSecurityQuestion} from './lib/security-question';
 
-const DEFAULT_TIMEOUT = 5000;
+const DEFAULT_TIMEOUT = 4000;
 
-export default async function fetchVanguardBalance(userName, password, securityQuestionAnswerMap, cb) {
-  if (!cb) {
-    return;
-  }
+function nextStep(cb, page, phantom) {
+  console.log('next step');
+  page.render('page.png');
 
-  // Validate params.
-  if (!userName || !password) {
-    cb({message: 'userName and password are required'});
+  // TODO Handle notice message (such as holiday closing)
+  // continueInput
+
+  page.close();
+  phantom.exit();
+
+  cb(null, {result: 'not implemented yet'});
+}
+
+export default async function fetchVanguardBalance(userName, password, securityQuestionAnswers, cb) {
+  if (!cb || !userName || !password) {
+    cb({message: 'userName, password, and the callback are required'});
     return;
   }
 
@@ -19,25 +28,31 @@ export default async function fetchVanguardBalance(userName, password, securityQ
 
   try {
     phantom = await createPhantom();
-    const loginHomePage = await openLoginHomePage(phantom);
-    await authenticate(loginHomePage, userName, password);
+    const page = await openLoginHomePage(phantom);
+    await authenticate(page, userName, password);
 
     setTimeout(async () => {
-      // Handle Security question page.
-      const isSecurityQuestionPage = await loginHomePage.evaluate(() => {
-        const h1 = document.getElementsByTagName('h1')[0];
-        const title = h1 && h1.innerHTML && h1.innerHTML.toLowerCase();
-        return title === 'answer your security question';
-      });
+      const isSecurityQuestionPage = await checkIsSecurityQuestionPage(page);
 
-      console.log('isSecurityQuestionPage = ', isSecurityQuestionPage);
+      if (isSecurityQuestionPage) {
+        if (!securityQuestionAnswers) {
+          cb({message: 'Security Questions param required'});
+          return;
+        }
 
-      // loginHomePage.render('page.png');
-      // loginHomePage.close();
+        const securityAnswer = await getSecurityAnswer(page, securityQuestionAnswers);
 
-      cb(null, {result: 'not implemented yet'});
+        if (!securityAnswer) {
+          cb({message: 'Could not find the answer of the security question.'});
+          return;
+        }
 
-      phantom.exit();
+        await answerSecurityQuestion(page, securityAnswer);
+
+        setTimeout(() => nextStep(cb, page, phantom), DEFAULT_TIMEOUT);
+      } else {
+        nextStep(cb, page, phantom);
+      }
     }, DEFAULT_TIMEOUT);
 
     // TODO Get the balance.

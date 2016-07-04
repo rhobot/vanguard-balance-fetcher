@@ -8,7 +8,7 @@ A simple JS library for fetching the balance in a [Vanguard](https://investor.va
 ```js
 import fetchBalance from 'vanguard-balance-fetcher';
 
-fetchBalance('username', 'password' (err, balance) => {
+fetchBalance('username', 'password', securityQuestionAnswers, (err, balance) => {
   if (err) {
     // TODO Handle error
     return;
@@ -16,6 +16,22 @@ fetchBalance('username', 'password' (err, balance) => {
 
   console.log(balance);
 });
+```
+
+## Format of `securityQuestionAnswers` param
+
+```js
+const securityQuestionAnswers = [
+  {
+    question: 'What is the first name of your boy or girlfriend?',
+    answer: 'Katy'
+  },
+  {
+    question: 'What is the last name of your first boss?',
+    answer: 'Kim'
+  },
+  ...
+];
 ```
 
 ## Example of `balance` object:
@@ -37,6 +53,11 @@ fetchBalance('username', 'password' (err, balance) => {
   ...
 }
 ```
+
+# Caveats
+
+* Due to the nature of what the library does, the function may not be working as intend
+whenever the website changes. Please file an issue or create a pull request for the fix if the library doesn't work.
 
 # License
 
