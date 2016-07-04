@@ -2,14 +2,14 @@ import {create as createPhantom} from 'phantom';
 import {setTimeout} from 'timers';
 import {LOGIN_PAGE_URL} from './config/links';
 
-export default async function fetchVanguardBalance(userName, password, accountId, cb) {
+export default async function fetchVanguardBalance(userName, password, cb) {
   if (!cb) {
     return;
   }
 
   // Validate params.
-  if (!userName || !password || !accountId) {
-    cb({message: 'userName, password, and accountId are required'});
+  if (!userName || !password) {
+    cb({message: 'userName and password are required'});
     return;
   }
 
