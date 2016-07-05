@@ -1,6 +1,6 @@
 {
   "name": "vanguard-balance-fetcher",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Get the balance of Vanguard accounts",
   "main": "index.js",
   "repository": {
