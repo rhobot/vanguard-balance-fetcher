@@ -33,17 +33,11 @@ fetchBalance('username', 'password', securityQuestionAnswers, (err, balance) => 
 ```js
 {
   AccountID1: {
-    VABCD: {
-      balance: 1000.00
-    },
-    VZXYP: {
-      balance: 952.12
-    }
+    VABCD: 1000.00,
+    VZXYP: 952.12
   },
   AccountID2: {
-    VXXXX: {
-      balance: 1234.00
-    }
+    VXXXX: 1234.00
   },
   ...
 }
