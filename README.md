@@ -1,7 +1,5 @@
-## Work in progress
-
 # vanguard-balance-fetcher
-A simple JS library for fetching the balance in a [Vanguard](https://investor.vanguard.com) account
+Get the balance of [Vanguard](https://investor.vanguard.com) accounts
 
 # usage
 

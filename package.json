@@ -1,7 +1,7 @@
 {
   "name": "vanguard-balance-fetcher",
   "version": "0.0.0",
-  "description": "A simple JS library for fetching the balance in a Vanguard account",
+  "description": "Get the balance of Vanguard accounts",
   "main": "index.js",
   "repository": {
     "type": "git",

@@ -22,8 +22,6 @@ export default async function fetchVanguardBalance(userName, password, securityQ
     await goToDashboard(page);
     const balance = await getBalance(page);
 
-    page.close();
-
     cb(null, balance);
   } catch (err) {
     cb(err.message);
